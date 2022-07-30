@@ -13,8 +13,6 @@ class P_app:
         """Prepare loggin method. You can select debug mod for print all logs or no debug for print just info logs.
         With log_file you can output all logs in a file.
 
-        :param debug: If you want debug your project, defaults to False
-        :type debug: bool, optional
         :param log_file: If you want output log file, defaults to True
         :type log_file: bool, optional
         """
@@ -31,9 +29,9 @@ class P_app:
         return parser
 
     def load_config_file(self):
-        if self.args['config_file'] != None:
-            if os.path.isfile(self.args['config_file']):
-                with open(self.args['config_file']) as json_file:
+        if self.args.config_file != None:
+            if os.path.isfile(self.args.config_file):
+                with open(self.args.config_file) as json_file:
                     return json.load(json_file)
             else:
                 self.logger.info("Not found")
