@@ -15,7 +15,7 @@ install-requirements: clean
 	pip install -r requirements.txt
 
 install: install-requirements reports-init
-	python setup.py install $(USER_OR_VENV)
+	python setup.py install
 
 reports-init:
 	mkdir -p reports
