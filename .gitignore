@@ -2,6 +2,8 @@
 **/__pycache__/
 venv
 env
+.venv
+.env
 
 # pyinstaller
 build
@@ -17,3 +19,6 @@ dist
 
 # vscode
 .vscode
+
+# reports
+reports
