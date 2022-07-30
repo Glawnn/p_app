@@ -24,7 +24,7 @@ black:
 	black $(PROJECT_NAME)
 
 lint: reports-init black
-	pylint $(PROJECT_NAME) # -r n --msg-template="{msg_id}:{line:3d},{column}: {obj}: {msg} ({symbol})" > reports/pylint-report.txt
+	- pylint $(PROJECT_NAME) # -r n --msg-template="{msg_id}:{line:3d},{column}: {obj}: {msg} ({symbol})" > reports/pylint-report.txt
 
 test:
 	coverage run -m pytest -v
