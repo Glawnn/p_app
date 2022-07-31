@@ -25,6 +25,6 @@ setup(
     description="TemplateFPP app",
     packages=find_packages(exclude=("test", "venv",  "docs")),
     install_requires=param["requirements"],
-    entry_points={"console_scripts": [f"{param['name_project']} = {param['name_project']}.app:main"]},
+    #entry_points={"console_scripts": [f"{param['name_project']} = {param['name_project']}.app:main"]},
     **param
 )
