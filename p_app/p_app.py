@@ -18,8 +18,7 @@ class P_app:
         """
         self.log_file = log_file
         self.argsparser = self.__param_parser()
-        self.args = self.argsparser.parse_args()
-        self.logger = self.__param_logger()
+        self.logger = None
 
     def __param_parser(self):
         parser = argparse.ArgumentParser()
@@ -28,24 +27,28 @@ class P_app:
 
         return parser
 
-    def load_config_file(self):
-        if self.args.config_file != None:
-            if os.path.isfile(self.args.config_file):
-                with open(self.args.config_file) as json_file:
+    def _load_config_file(self):
+        if self.args['config_file'] != None:
+            if os.path.isfile(self.args['config_file']):
+                with open(self.args['config_file']) as json_file:
                     return json.load(json_file)
             else:
                 self.logger.info("Not found")
-        return None
+        return {}
 
     def load_args(self):
-        return vars(self.argsparser.parse_args())
+        self.args = vars(self.argsparser.parse_args())
+        self.__init_logger()
+        for key, elem in self._load_config_file().items():
+            self.args[key] = elem
+        self.__init_logger()
 
-    def __param_logger(self):
-        logger = logging.getLogger("logger_app")
-        if self.args.debug == True:
-            logger.setLevel(logging.DEBUG)
+    def __init_logger(self):
+        self.logger = logging.getLogger("logger_app")
+        if self.args['debug'] == True:
+            self.logger.setLevel(logging.DEBUG)
         else:
-            logger.setLevel(logging.INFO)
+            self.logger.setLevel(logging.INFO)
         # console loggin
         sh = logging.StreamHandler()
         sh.setLevel(logging.DEBUG)
@@ -59,8 +62,8 @@ class P_app:
         if self.log_file:
             fh.setFormatter(formatter)
 
-        logger.addHandler(sh)
+        self.logger.addHandler(sh)
         if self.log_file:
-            logger.addHandler(fh)
+            self.logger.addHandler(fh)
 
-        return logger
+        

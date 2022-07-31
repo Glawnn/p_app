@@ -16,7 +16,8 @@ class Test_P_app:
             sys.argv.remove('-v')
         sys.argv.append('-d')
         app = P_app()
-        assert app.args.debug == True
+        app.load_args()
+        assert app.args['debug'] == True
                 
     def test_debug_mode_false(self):
         if '-v' in sys.argv:
@@ -24,14 +25,15 @@ class Test_P_app:
         if '-d' in sys.argv:
             sys.argv.remove('-d')
         app = P_app()
-        assert app.args.debug == False
+        app.load_args()
+        assert app.args['debug'] == False
 
     def test_without_load_config_file(self):
         if '-v' in sys.argv:
             sys.argv.remove('-v')
-        #sys.argv.append('-cf "test_config.json"')
         app = P_app()
-        assert app.load_config_file() == None
+        app.load_args()
+        assert app._load_config_file() == {}
     
     def test_with_load_config_file(self):
         if '-v' in sys.argv:
@@ -39,10 +41,23 @@ class Test_P_app:
         sys.argv.append('-cf')
         sys.argv.append('tests/test_config.json')
         app = P_app()
-        assert app.load_config_file() == {'hello': 'world'}
+        app.load_args()
+        assert app._load_config_file() == {'hello': 'world'}
 
-    def test_load_args(self):
+    def test_load_args_with_config_file(self):
         app = P_app()
-        assert app.load_args() == {'config_file': 'tests/test_config.json', 'debug': False}
+        app.load_args()
+        assert app.args == {'config_file': 'tests/test_config.json', 'debug': False, 'hello': 'world'}
 
+    def test_load_args_with_config_file(self):
+        if '-v' in sys.argv:
+            sys.argv.remove('-v')
+        if '-cf' in sys.argv:
+            sys.argv.remove('-cf')
+        if 'tests/test_config.json' in sys.argv:
+            sys.argv.remove('tests/test_config.json')
+        app = P_app()
+        app.load_args()
+
+        assert app.args == {'config_file': None, 'debug': False}
 
